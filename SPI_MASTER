@@ -1,0 +1,44 @@
+volatile uint16_t *sPCR=(uint16_t*)0x4C;
+volatile uint16_t *sPSR=(uint16_t*)0x4D;
+volatile uint16_t *sDDRB=(uint16_t*)0x24;
+volatile uint16_t *sPDR=(uint16_t*)0x4E;
+ 
+ int main(){
+  init();
+  Serial.begin(9600);
+  *sPCR=0xD1;//for master
+  *sPDR=0x80;
+  *sDDRB=0x2C;
+ // send data only when you receive data:
+ int incomingByte;
+incomingByte=*sPSR;
+ while(1){
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    int incomingByte = Serial.read();
+
+    // say what you got:
+    Serial.print("I received: ");
+    Serial.write(incomingByte);
+  }}}
+
+  uint8_t rxArray[100];
+  uint8_t rxHeadIndex=0;
+  uint8_t rxTailIndex=0;
+  uint8_t numberOfBytes;
+  
+  rxArray[rxHeadIndex]=*sPCR;
+  rxHeadIndex++;
+
+  if(rxHeadIndex=100){
+    rxHeadIndex=0;
+  }
+
+  if(rxHeadIndex==rxTailIndex){
+    numberOfBytes=0;}
+    else{
+      if(rxHeadIndex>rxTailIndex){
+        numberOfBytes=rxHeadIndex-rxTailIndex;
+      }
+  else{numberOfBytes=100-(rxTailIndex-rxHeadIndex);}
+}
