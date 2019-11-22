@@ -12,7 +12,6 @@ volatile uint16_t *sPDR=(uint16_t*)0x4E;
  // send data only when you receive data:
  int incomingByte;
 incomingByte=*sPSR;
- while(1){
   if (Serial.available() > 0) {
     // read the incoming byte:
     int incomingByte = Serial.read();
@@ -20,14 +19,14 @@ incomingByte=*sPSR;
     // say what you got:
     Serial.print("I received: ");
     Serial.write(incomingByte);
-  }}}
-
+  }}
+ISR(SPI_STC_vect){
   uint8_t rxArray[100];
   uint8_t rxHeadIndex=0;
   uint8_t rxTailIndex=0;
   uint8_t numberOfBytes;
-  
-  rxArray[rxHeadIndex]=*sPCR;
+   
+  rxArray[rxHeadIndex]=*sPDR;
   rxHeadIndex++;
 
   if(rxHeadIndex=100){
@@ -41,4 +40,4 @@ incomingByte=*sPSR;
         numberOfBytes=rxHeadIndex-rxTailIndex;
       }
   else{numberOfBytes=100-(rxTailIndex-rxHeadIndex);}
-}
+}}
